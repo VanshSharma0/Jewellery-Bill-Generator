@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .bill-preview, .bill-preview * {
+    visibility: visible; /* Make sure the bill is visible when printing */
+  }
+  .bill-preview {
+    page-break-after: always;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    page-break-after: always;
+    page-break-inside: avoid;
+  }
+  
+  .item-list { /* Example for a list of items */
+    max-height: 200px; /* Adjust as needed */
+    overflow-y: auto;
+  }
+}
+
+@media print {
+  @page {
+    margin: 0;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  header, footer {
+    display: none !important;
+  }
+}
