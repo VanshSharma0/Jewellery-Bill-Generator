@@ -13,12 +13,13 @@ import {
 
 // Initialize Firebase (replace with your own config)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBelUvkmgzay05xMvC0sNTRexsxMV0rTCU",
+  authDomain: "bill-gen-a4c7f.firebaseapp.com",
+  projectId: "bill-gen-a4c7f",
+  storageBucket: "bill-gen-a4c7f.firebasestorage.app",
+  messagingSenderId: "682162688340",
+  appId: "1:682162688340:web:b589e598ee827d556078c1",
+  measurementId: "G-7M2MCZEY26"
 };
 
 // Initialize Firebase and Firestore
