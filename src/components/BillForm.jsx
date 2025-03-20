@@ -74,9 +74,10 @@ function BillForm({ billData, onFormChange, onPrint, onSaveBill }) {
     console.log('Field changed:', name, value); // Debugging
     onFormChange({ [name]: value });
     
-    // Handle customer search
+    // Handle customer search AND autofill
     if (name === 'customerName') {
       setSearchTerm(value);
+      handleAutoFillCustomer(value); // Call the function here
     }
   };
 
@@ -624,7 +625,7 @@ function BillForm({ billData, onFormChange, onPrint, onSaveBill }) {
               </select>
             </div>
             <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Discount (%):</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Discount (Rs):</label>
               <input
                 type="number"
                 name="discount"
@@ -739,7 +740,7 @@ function BillForm({ billData, onFormChange, onPrint, onSaveBill }) {
             </button>
             <button
               type="button"
-              onClick={onSaveBill}
+              onClick={handleSaveBill}
               className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
             >
               Save Bill

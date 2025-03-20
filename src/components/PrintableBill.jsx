@@ -1,6 +1,7 @@
 // src/components/PrintableBill.jsx
 import React from 'react';
 import { formatIndianCurrency } from '../utils/currencyFormatter';
+import logo from '../assets/logo.png'; 
 
 function PrintableBill({ billData }) {
   // Calculate totals 
