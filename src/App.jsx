@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
   const [billData, setBillData] = useState({
-    invoiceNumber: '602',
+    invoiceNumber: '0',
     date: new Date().toISOString().substr(0, 10),
     gstin: '07AZTPS3304H1Z2',
     customerName: '',
