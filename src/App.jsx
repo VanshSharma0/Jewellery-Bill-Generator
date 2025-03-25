@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import BillForm from './components/BillForm';
 import BillPreview from './components/BillPreview';
-import * as XLSX from 'xlsx'; 
 import PreviousBills from './components/PreviousBills';
 import CustomersPage from './components/CustomersPage';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
@@ -42,36 +41,6 @@ function App() {
       window.removeEventListener('resize', checkScreenSize);
     };
   }, []);
-
-  // Generate new invoice number based on previous bills
-  useEffect(() => {
-    const savedBills = JSON.parse(localStorage.getItem('bills')) || [];
-    if (savedBills.length > 0) {
-      // Find the highest invoice number and increment by 1
-      const highestInvoice = savedBills.reduce((max, bill) => {
-        const current = parseInt(bill.invoiceNumber) || 0;
-        return current > max ? current : max;
-      }, 0);
-      
-      setBillData(prev => ({
-        ...prev,
-        invoiceNumber: (highestInvoice + 1).toString()
-      }));
-    }
-  }, []);
-
-  // Load saved customers from local storage on component mount
-  useEffect(() => {
-    const savedCustomers = JSON.parse(localStorage.getItem('customers')) || [];
-    console.log('Loaded customers from local storage:', savedCustomers);
-    setCustomers(savedCustomers);
-  }, []);
-
-  // Save customers to local storage whenever the list changes
-  useEffect(() => {
-    console.log('Saving customers to local storage:', customers);
-    localStorage.setItem('customers', JSON.stringify(customers));
-  }, [customers]);
 
   const handleFormChange = (updatedData) => {
     console.log('Updating billData:', updatedData);
@@ -141,49 +110,16 @@ function App() {
     }
   };
 
-  const exportCustomersToExcel = () => {
-    const dataToExport = customers.map(customer => ({
-      'Customer Name': customer.name,
-      'Address': customer.address,
-      'GSTIN': customer.gstin,
-      'State': customer.state,
-      'State Code': customer.stateCode,
-      'Phone': customer.phone,
-    }));
-  
-    const ws = XLSX.utils.json_to_sheet(dataToExport);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Customers');
-  
-    XLSX.writeFile(wb, 'customer_data.xlsx');
-  };
-
-  const saveBillToLocalStorage = () => {
-    // Calculate totals for storing with the bill
-    const subtotal = billData.items.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
-    const discountAmount = (subtotal * (billData.discount / 100)) || 0;
-    const taxableAmount = subtotal - discountAmount;
-    const makingChargeAmount = (taxableAmount * (billData.makingChargeRate / 100)) || 0;
-    const sgstAmount = (taxableAmount * (billData.sgstRate / 100)) || 0;
-    const cgstAmount = (taxableAmount * (billData.cgstRate / 100)) || 0;
-    const grandTotal = taxableAmount + makingChargeAmount + sgstAmount + cgstAmount;
+  const handleSaveBill = () => {
+    if (billData.items.length === 0) {
+      alert('Please add at least one item to the bill.');
+      return;
+    }
     
-    // Create a complete bill object with calculated totals
-    const completeBill = {
-      ...billData,
-      subtotal,
-      discountAmount,
-      taxableAmount,
-      makingChargeAmount,
-      sgstAmount,
-      cgstAmount,
-      grandTotal,
-      createdAt: new Date().toISOString()
-    };
-    
-    const bills = JSON.parse(localStorage.getItem('bills')) || [];
-    bills.push(completeBill);
-    localStorage.setItem('bills', JSON.stringify(bills));
+    if (!billData.customerName) {
+      alert('Please enter a customer name.');
+      return;
+    }
     
     // Reset form for a new bill
     setBillData(prev => ({
@@ -202,30 +138,12 @@ function App() {
     
     // Show success message
     alert('Bill saved successfully!');
-    
-    return completeBill;
-  };
-
-  const handleSaveBill = () => {
-    if (billData.items.length === 0) {
-      alert('Please add at least one item to the bill.');
-      return;
-    }
-    
-    if (!billData.customerName) {
-      alert('Please enter a customer name.');
-      return;
-    }
-    
-    const savedBill = saveBillToLocalStorage();
-    console.log('Bill saved:', savedBill);
   };
 
   const togglePreview = () => {
     setShowPreview(!showPreview);
   };
 
-  // localStorage.clear();
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-50">
@@ -303,7 +221,7 @@ function App() {
             </div>
           } />
           <Route path="/previous-bills" element={<PreviousBills />} />
-          <Route path="/customers" element={<CustomersPage exportCustomers={exportCustomersToExcel} />} />
+          <Route path="/customers" element={<CustomersPage />} />
         </Routes>
       </div>
     </BrowserRouter>
