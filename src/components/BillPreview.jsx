@@ -10,7 +10,7 @@ function BillPreview({ billData, onPrint }) {
     const sgstAmount = (taxableAmount * (billData.sgstRate / 100)) || 0;
     const cgstAmount = (taxableAmount * (billData.cgstRate / 100)) || 0;
     const grandTotal = taxableAmount + makingChargeAmount + sgstAmount + cgstAmount;
-  
+    
     const formattedDate = new Date(billData.date).toLocaleDateString('en-IN', {
       day: '2-digit',
       month: '2-digit',
@@ -24,7 +24,7 @@ function BillPreview({ billData, onPrint }) {
         minimumFractionDigits: 2
       }).format(num);
     };
-  
+    
     return (
       <div className="bill-preview bg-white p-6 border border-gray-800 rounded shadow-lg print:border-0 print:shadow-none mx-auto min-h-screen flex flex-col print:min-h-0 print:h-auto print:max-h-screen" style={{ width: '210mm', minHeight: '297mm' }}>
         <div className="mx-6 print:mx-4 h-full flex flex-col">
@@ -107,10 +107,10 @@ function BillPreview({ billData, onPrint }) {
                           <td className="border border-gray-800 p-1 text-right">₹{formatIndianCurrency(parseFloat(item.amount))}</td>
                         </tr>
                       ))}
-                      {/* Create more empty rows to fill space */}
-                      {[...Array(Math.max(0, Math.min(10, 12 - billData.items.length)))].map((_, index) => (
+                      {/* Create empty rows to fill space */}
+                      {[...Array(Math.max(0, 12 - billData.items.length))].map((_, index) => (
                         <tr key={`empty-${index}`}>
-                          <td className="border border-gray-800 p-1">&nbsp;</td>
+                          <td className="border border-gray-800 p-1"> </td>
                           <td className="border border-gray-800 p-1"></td>
                           <td className="border border-gray-800 p-1"></td>
                           <td className="border border-gray-800 p-1"></td>
@@ -205,8 +205,8 @@ function BillPreview({ billData, onPrint }) {
           
           {/* Print button only visible on screen, hidden when printing */}
           <div className="mt-4 text-center print:hidden">
-            <button 
-              onClick={onPrint} 
+            <button
+              onClick={onPrint}
               className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
             >
               Print Invoice
