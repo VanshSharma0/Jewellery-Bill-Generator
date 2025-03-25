@@ -15,7 +15,7 @@ function App() {
     customerAddress: '',
     customerGstin: '',
     customerState: '',
-    customerStateCode: '',
+    customerStateCode: '07',
     customerPhone: '',
     items: [],
     paymentMode: 'Cash',
