@@ -2,7 +2,8 @@ import React from 'react';
 import logo from '/logo.png';
 
 function BillPreview({ billData, onPrint }) {
-    // Calculate totals
+    // Calculate totals with the given bill data
+    
     const subtotal = billData.items.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
     const discountAmount = (subtotal * (billData.discount / 100)) || 0;
     const taxableAmount = subtotal - discountAmount;
