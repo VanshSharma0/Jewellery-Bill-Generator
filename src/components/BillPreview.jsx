@@ -3,7 +3,7 @@ import logo from '/logo.png';
 
 function BillPreview({ billData, onPrint }) {
     // Calculate totals with the given bill data
-    
+
     const subtotal = billData.items.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
     const discountAmount = (subtotal * (billData.discount / 100)) || 0;
     const taxableAmount = subtotal - discountAmount;
@@ -92,7 +92,7 @@ function BillPreview({ billData, onPrint }) {
                         <th className="border border-gray-800 p-1 text-left w-12">Qty.</th>
                         <th className="border border-gray-800 p-1 text-left w-16">Gross Wt. (gm)</th>
                         <th className="border border-gray-800 p-1 text-left w-16">Net Wt. (gm)</th>
-                        <th className="border border-gray-800 p-1 text-left w-16">Rate</th>
+                        <th className="border-t border-b border-gray-800 p-1 text-left w-16">Rate</th>
                         <th className="border border-gray-800 p-1 text-right w-20">Amount</th>
                       </tr>
                     </thead>
@@ -104,20 +104,8 @@ function BillPreview({ billData, onPrint }) {
                           <td className="border border-gray-800 p-1">{item.quantity}</td>
                           <td className="border border-gray-800 p-1">{item.grossWeight}</td>
                           <td className="border border-gray-800 p-1">{item.netWeight}</td>
-                          <td className="border border-gray-800 p-1">₹{formatIndianCurrency(item.rate)}</td>
+                          <td className="border-t border-b border-gray-800 p-1">₹{formatIndianCurrency(item.rate)}</td>
                           <td className="border border-gray-800 p-1 text-right">₹{formatIndianCurrency(parseFloat(item.amount))}</td>
-                        </tr>
-                      ))}
-                      {/* Create empty rows to fill space */}
-                      {[...Array(Math.max(0, 12 - billData.items.length))].map((_, index) => (
-                        <tr key={`empty-${index}`}>
-                          <td className="border border-gray-800 p-1"> </td>
-                          <td className="border border-gray-800 p-1"></td>
-                          <td className="border border-gray-800 p-1"></td>
-                          <td className="border border-gray-800 p-1"></td>
-                          <td className="border border-gray-800 p-1"></td>
-                          <td className="border border-gray-800 p-1"></td>
-                          <td className="border border-gray-800 p-1"></td>
                         </tr>
                       ))}
                     </tbody>
