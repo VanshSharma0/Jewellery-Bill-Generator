@@ -3,7 +3,7 @@ import logo from '/logo.png';
 
 function BillPreview({ billData, onPrint }) {
     // Calculate totals with the given bill data
-
+    
     const subtotal = billData.items.reduce((sum, item) => sum + parseFloat(item.amount || 0), 0);
     const discountAmount = (subtotal * (billData.discount / 100)) || 0;
     const taxableAmount = subtotal - discountAmount;
@@ -106,6 +106,18 @@ function BillPreview({ billData, onPrint }) {
                           <td className="border border-gray-800 p-1">{item.netWeight}</td>
                           <td className="border-t border-b border-gray-800 p-1">₹{formatIndianCurrency(item.rate)}</td>
                           <td className="border border-gray-800 p-1 text-right">₹{formatIndianCurrency(parseFloat(item.amount))}</td>
+                        </tr>
+                      ))}
+                      {/* Create empty rows to fill space */}
+                      {[...Array(Math.max(0, 12 - billData.items.length))].map((_, index) => (
+                        <tr key={`empty-${index}`}>
+                          <td className="border border-gray-800 p-1"> </td>
+                          <td className="border border-gray-800 p-1"></td>
+                          <td className="border border-gray-800 p-1"></td>
+                          <td className="border border-gray-800 p-1"></td>
+                          <td className="border border-gray-800 p-1"></td>
+                          <td className="border border-gray-800 p-1"></td>
+                          <td className="border border-gray-800 p-1"></td>
                         </tr>
                       ))}
                     </tbody>
